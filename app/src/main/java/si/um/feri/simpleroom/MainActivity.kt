@@ -15,15 +15,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "database-name"
-        ).build()
-
-        coroutineScope.launch { db.userDao().insertAll(User(1, "Janez", "Novak")) }
+        coroutineScope.launch {
+            AppDatabase.getDatabase(this@MainActivity).userDao()
+                .insertAll(User(0, "Janez", "Novak"))
+        }
 
         coroutineScope.launch {
-            Log.d("baza", db.userDao().getAll().toString())
+            Log.d("baza", AppDatabase.getDatabase(this@MainActivity).userDao().getAll().toString())
         }
     }
 }
